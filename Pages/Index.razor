@@ -1,0 +1,494 @@
+@page "/"
+@implements IDisposable
+@inject HttpClient Http
+
+<div dir="@(IsArabic ? "rtl" : "ltr")" class="wi-lang-wrapper">
+
+    <!-- Language Toggle Button -->
+    <button class="wi-lang-btn" @onclick="() => IsArabic = !IsArabic">
+        @(IsArabic ? "English" : "عربي") 🌐
+    </button>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 1 — HERO
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-hero" id="wi-hero">
+
+        <!-- Falling Petals Layer (z-index: 0) -->
+        <div class="wi-hero__petals" aria-hidden="true">
+            @for (int i = 0; i < 14; i++)
+            {
+                var n = i;
+                <div class="wi-petal wi-petal--@n"></div>
+            }
+        </div>
+
+        <!-- Radial gradient overlay -->
+        <div class="wi-hero__overlay" aria-hidden="true"></div>
+
+        <!-- Main content -->
+        <div class="wi-hero__content">
+
+            <p class="wi-hero__tagline">
+                @(IsArabic ? "أنت مدعو بحب للاحتفال بزفاف" : "You are cordially invited to celebrate the marriage of")
+            </p>
+
+            <div class="wi-hero__names">
+                <span class="wi-hero__name">@(IsArabic ? "ليلى" : "Layla")</span>
+
+                <!-- Desktop: animated ring -->
+                <div class="wi-hero__amp-ring" aria-hidden="true">
+                    <span class="wi-hero__amp">@(IsArabic ? "و" : "&")</span>
+                </div>
+
+                <!-- Mobile: plain text ampersand -->
+                <span class="wi-hero__amp-text-mobile" aria-hidden="true">@(IsArabic ? "و" : "&")</span>
+
+                <span class="wi-hero__name">@(IsArabic ? "عمر" : "Omar")</span>
+            </div>
+
+            <!-- Gold divider -->
+            <div class="wi-divider" aria-hidden="true">
+                <span class="wi-divider__line"></span>
+                <span class="wi-divider__star">✦</span>
+                <span class="wi-divider__line"></span>
+            </div>
+
+            <p class="wi-hero__date">
+                @(IsArabic ? "الأحد، 05 / 07" : "Sunday, 05 / 07")
+            </p>
+            <p class="wi-hero__year">
+                2026
+            </p>
+            <p class="wi-hero__location">
+                @(IsArabic ? "📍 القاهرة، مصر" : "📍 Cairo, Egypt")
+            </p>
+
+            <a href="#wi-details" class="wi-btn wi-btn--outline">
+                @(IsArabic ? "التفاصيل" : "View Details")
+            </a>
+        </div>
+
+        <!-- Scroll hint chevrons -->
+        <div class="wi-scroll-hint" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 2 — COUNTDOWN
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-countdown" id="wi-countdown">
+        <div class="wi-section-tag">
+            @(IsArabic ? "العد التنازلي" : "Counting Down")
+        </div>
+        <h2 class="wi-section-title">
+            @(IsArabic ? "اليوم الكبير يقترب" : "The Big Day Approaches")
+        </h2>
+
+        <div class="wi-countdown__grid" role="timer" aria-label="Countdown to wedding">
+
+            <div class="wi-countdown__unit">
+                <span class="wi-countdown__num">@_days.ToString("D2")</span>
+                <span class="wi-countdown__label">@(IsArabic ? "أيام" : "Days")</span>
+            </div>
+
+            <span class="wi-countdown__colon" aria-hidden="true">:</span>
+
+            <div class="wi-countdown__unit">
+                <span class="wi-countdown__num">@_hours.ToString("D2")</span>
+                <span class="wi-countdown__label">@(IsArabic ? "ساعات" : "Hours")</span>
+            </div>
+
+            <span class="wi-countdown__colon" aria-hidden="true">:</span>
+
+            <div class="wi-countdown__unit">
+                <span class="wi-countdown__num">@_minutes.ToString("D2")</span>
+                <span class="wi-countdown__label">@(IsArabic ? "دقائق" : "Minutes")</span>
+            </div>
+
+            <span class="wi-countdown__colon" aria-hidden="true">:</span>
+
+            <div class="wi-countdown__unit">
+                <span class="wi-countdown__num">@_seconds.ToString("D2")</span>
+                <span class="wi-countdown__label">@(IsArabic ? "ثواني" : "Seconds")</span>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 3 — OUR STORY / TIMELINE
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-story" id="wi-story">
+        <div class="wi-story__header">
+            <div class="wi-section-tag">@(IsArabic ? "رحلتنا" : "Our Journey")</div>
+            <h2 class="wi-section-title">@(IsArabic ? "حكاية مودة ورحمة في أربعة فصول" : "A Story of Affection and Mercy in Four Chapters")</h2>
+        </div>
+
+        <div class="wi-timeline">
+            <!-- Vertical center line -->
+            <div class="wi-timeline__line" aria-hidden="true"></div>
+
+            <!-- Card 1 — Left -->
+            <div class="wi-timeline__item">
+                <div class="wi-timeline__dot" aria-hidden="true"></div>
+                <div class="wi-timeline__card">
+                    <span class="wi-timeline__icon">✦</span>
+					<div class="wi-timeline__year">يناير 2026</div>
+                <h3>@(IsArabic ? "بداية طيبة" : "A Good Beginning")</h3>
+                    <p>
+                        @(IsArabic
+                            ? "بدأت الحكاية برؤية شرعية جمعت بين قلبين يسعيان لما فيه الخير، وكانت أول خطوة في رحلة كتب الله لها أن تبدأ.."
+                            : "Our story began with a traditional, faith-guided meeting that brought together two hearts seeking what is good, marking the first step in a journey that God had destined to begin.")
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 2 — Right -->
+            <div class="wi-timeline__item">
+                <div class="wi-timeline__dot" aria-hidden="true"></div>
+                <div class="wi-timeline__card">
+                    <span class="wi-timeline__icon">♡</span>
+                    <div class="wi-timeline__year">فبراير 2026</div>
+                    <h3>@(IsArabic ? "قبول وارتياح" : "Acceptance and Ease")</h3>
+                    <p>
+                        @(IsArabic
+                            ? "كبر بين القلوب قبول هادئ، وزاد الاطمئنان حين اجتمعت النية على بيت يقوم على الدين والاحترام."
+                            : "A quiet sense of acceptance grew, strengthened by a shared intention to build a home founded on faith and respect.")
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 3 — Left -->
+            <div class="wi-timeline__item">
+                <div class="wi-timeline__dot" aria-hidden="true"></div>
+                <div class="wi-timeline__card">
+                    <span class="wi-timeline__icon">✧</span>
+                    <div class="wi-timeline__year">مارس 2026</div>
+                    <h3>@(IsArabic ? "قراءة الفاتحة والخطوبة" : "Fatiha and Engagement")</h3>
+                    <p>
+                        @(IsArabic
+                            ? "اجتمعت الأسرتان على الخير، وقُرئت الفاتحة وسط دعوات الأهل بالبركة والتوفيق."
+                            : "The two families gathered in goodness, with prayers for blessing, ease, and a life of mutual care.")
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card 4 — Right -->
+            <div class="wi-timeline__item">
+                <div class="wi-timeline__dot" aria-hidden="true"></div>
+                <div class="wi-timeline__card">
+                    <span class="wi-timeline__icon">❊</span>
+                    <div class="wi-timeline__year">يونيو 2026</div>
+                    <h3>@(IsArabic ? "زفاف مبارك" : "A Blessed Wedding")</h3>
+                    <p>
+                        @(IsArabic
+                            ? "واليوم نبدأ حياة جديدة على المودة والرحمة، ونسعد أن تشاركونا الدعاء والفرحة."
+                            : "Today begins a new life of affection and mercy, and we are honoured to share the joy and prayers of those dear to us.")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 4 — EVENT DETAILS
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-details" id="wi-details">
+        <div class="wi-text-center wi-mb-lg">
+            <div class="wi-section-tag">@(IsArabic ? "تفاصيل الحدث" : "Event Details")</div>
+            <h2 class="wi-section-title">@(IsArabic ? "انضم إلينا للاحتفال" : "Join Us to Celebrate")</h2>
+        </div>
+
+        <div class="wi-details__grid wi-details__grid--single">
+
+            <!-- Wedding Card -->
+            <div class="wi-event-card">
+                <span class="wi-event-card__icon">💍</span>
+                <h3>@(IsArabic ? "حفل الزفاف" : "Wedding Ceremony")</h3>
+                <div class="wi-event-card__time">@(IsArabic ? "7:00 م" : "7:00 PM")</div>
+                <div class="wi-event-card__venue">@(IsArabic ? "قاعة لايك سايد - فندق دوسيت ثاني ليك فيو القاهرة" : "Lakeside Ballroom - Dusit Thani LakeView Cairo")</div>
+                <div class="wi-event-card__address">
+                    @if(IsArabic) {
+                        <span>فندق دوسيت ثاني ليك فيو<br />التجمع الخامس، القاهرة الجديدة، مصر</span>
+                    } else {
+                        <span>Dusit Thani LakeView Cairo<br />New Cairo, Cairo Governorate, Egypt</span>
+                    }
+                </div>
+                <a href="https://www.google.com/maps/search/?api=1&query=Dusit+Thani+LakeView+Cairo" target="_blank" rel="noopener" class="wi-event-card__map">
+                    @(IsArabic ? "عرض القاعة على الخريطة ↗" : "View Venue on Map ↗")
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 5 — GALLERY
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-gallery" id="wi-gallery">
+        <div class="wi-gallery__header">
+            <div class="wi-section-tag">@(IsArabic ? "ذكريات" : "Memories")</div>
+            <h2 class="wi-section-title">@(IsArabic ? "قصتنا في لحظات" : "Our Story in Moments")</h2>
+        </div>
+
+        <div class="wi-gallery__grid" role="list" aria-label="Photo gallery">
+            @foreach (var photo in _galleryPhotos)
+            {
+                <div class="wi-gallery__item" role="listitem">
+                    <img src="@photo.Src"
+                         alt="@(IsArabic ? photo.LabelAr : photo.LabelEn)"
+                         loading="lazy"
+                         decoding="async" />
+                    <div class="wi-gallery__hover-label">@(IsArabic ? photo.LabelAr : photo.LabelEn)</div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 6 — RSVP
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="wi-rsvp" id="wi-rsvp">
+        <div class="wi-text-center wi-mb-lg">
+            <div class="wi-section-tag">@(IsArabic ? "تأكيد الحضور" : "RSVP")</div>
+            <h2 class="wi-section-title">@(IsArabic ? "هل ستنضم إلينا؟" : "Will You Join Us?")</h2>
+        </div>
+
+        <div class="wi-rsvp__container">
+
+            @if (_rsvpSent)
+            {
+                <!-- Success State -->
+                <div class="wi-rsvp__success">
+                    <span class="wi-rsvp__success-icon">
+                        @(_attending ? "🎉" : "💌")
+                    </span>
+                    <h3>
+                        @(_attending
+                            ? (IsArabic ? $"لا نطيق الانتظار لرؤيتك يا {_name}!" : $"We can't wait to see you, {_name}!")
+                            : (IsArabic ? $"شكراً لك يا {_name}." : $"Thank you, {_name}."))
+                    </h3>
+                    <p>
+                        @(_attending
+                            ? (IsArabic ? "تم استلام تأكيد حضورك. نحن متحمسون جداً للاحتفال معك في يومنا المميز." : "Your RSVP has been received. We are so excited to celebrate with you on our special day.")
+                            : (IsArabic ? "نأسف لعدم تمكنك من الحضور، ولكننا ممتنون لأمنياتك الطيبة ومشارعك الدافئة." : "We are sorry you cannot make it, but we are grateful for your kind wishes and warm thoughts."))
+                    </p>
+                </div>
+            }
+            else
+            {
+                <!-- Form -->
+                <div class="wi-form-group">
+                    <label class="wi-form-label" for="rsvp-name">@(IsArabic ? "الاسم الكامل" : "Your Full Name")</label>
+                    <input id="rsvp-name"
+                           type="text"
+                           class="wi-form-input"
+                           placeholder="@(IsArabic ? "أدخل اسمك..." : "Enter your name…")"
+                           @bind="_name"
+                           @bind:event="oninput" />
+                </div>
+
+                <div class="wi-form-group">
+                    <label class="wi-form-label">@(IsArabic ? "الحضور" : "Attendance")</label>
+                    <div class="wi-toggle-group">
+                        <button class="wi-toggle-btn @(_answered && _attending ? "wi-toggle-btn--active" : "")"
+                                @onclick="() => { _attending = true; _answered = true; }"
+                                type="button"
+                                id="rsvp-accepts">
+                            @(IsArabic ? "✓ بكل سرور سأحضر" : "✓ Joyfully Accepts")
+                        </button>
+                        <button class="wi-toggle-btn @(_answered && !_attending ? "wi-toggle-btn--active" : "")"
+                                @onclick="() => { _attending = false; _answered = true; }"
+                                type="button"
+                                id="rsvp-declines">
+                            @(IsArabic ? "✗ أعتذر عن الحضور" : "✗ Regretfully Declines")
+                        </button>
+                    </div>
+                </div>
+
+                @if (_attending || !_answered)
+                {
+                    <div class="wi-form-group">
+                        <label class="wi-form-label">@(IsArabic ? "عدد الضيوف" : "Number of Guests")</label>
+                        <div class="wi-guest-counter">
+                            <button class="wi-counter-btn"
+                                    @onclick="() => { if (_guests > 1) _guests--; }"
+                                    type="button"
+                                    id="rsvp-guests-minus"
+                                    aria-label="Decrease guest count">−</button>
+                            <span class="wi-counter-display" aria-live="polite">@_guests</span>
+                            <button class="wi-counter-btn"
+                                    @onclick="() => { if (_guests < 6) _guests++; }"
+                                    type="button"
+                                    id="rsvp-guests-plus"
+                                    aria-label="Increase guest count">+</button>
+                        </div>
+                    </div>
+
+                }
+
+                <div class="wi-form-group">
+                    <label class="wi-form-label" for="rsvp-message">@(IsArabic ? "رسالة للعروسين (اختياري)" : "A Message for the Couple (Optional)")</label>
+                    <textarea id="rsvp-message"
+                              class="wi-form-textarea"
+                              placeholder="@(IsArabic ? "شاركنا أمنياتك الدافئة..." : "Share your warm wishes…")"
+                              @bind="_message"
+                              @bind:event="oninput"></textarea>
+                </div>
+
+                @if (!string.IsNullOrEmpty(_error))
+                {
+                    <p class="wi-form-error" role="alert">⚠️ @_error</p>
+                }
+
+                <button class="wi-btn wi-btn--gold"
+                        @onclick="SubmitRsvp"
+                        type="button"
+                        id="rsvp-submit"
+                        style="width:100%;text-align:center;">
+                    @(IsArabic ? "إرسال تأكيد الحضور" : "Send RSVP")
+                </button>
+            }
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 7 — FOOTER
+         ═══════════════════════════════════════════════════════════ -->
+    <footer class="wi-footer" id="wi-footer">
+        <div class="wi-footer__names">@(IsArabic ? "ليلى و عمر" : "Layla & Omar")</div>
+        <div class="wi-footer__date">@(IsArabic ? "الأحد · ٠٥ يوليو ٢٠٢٦ · القاهرة، مصر" : "Sunday · 05 July 2026 · Cairo, Egypt")</div>
+        <div class="wi-footer__hearts" aria-label="Three hearts">♡ ♡ ♡</div>
+    </footer>
+
+</div>
+
+@code {
+    public bool IsArabic { get; set; } = true;
+
+    /* ── Countdown Timer ─────────────────────────────────── */
+    private int _days, _hours, _minutes, _seconds;
+    private System.Threading.Timer? _timer;
+    private DateTimeOffset _weddingDate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _weddingDate = await GetWeddingDateAsync();
+        UpdateCountdown();
+        _timer = new System.Threading.Timer(async _ =>
+        {
+            UpdateCountdown();
+            await InvokeAsync(StateHasChanged);
+        }, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    private async Task<DateTimeOffset> GetWeddingDateAsync()
+    {
+        try
+        {
+            var settings = await Http.GetFromJsonAsync<CountdownSettings>("appsettings.json");
+            if (DateTimeOffset.TryParse(
+                settings?.CountdownTargetDateTime,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.AssumeLocal,
+                out var weddingDate))
+            {
+                return weddingDate;
+            }
+        }
+        catch
+        {
+            // Keep the invitation alive even if the settings file is unavailable.
+        }
+
+        return DateTimeOffset.Now.AddDays(20);
+    }
+
+    private sealed class CountdownSettings
+    {
+        public string? CountdownTargetDateTime { get; set; }
+    }
+
+    private sealed class EmailSettings
+    {
+        public string? EmailApiUrl { get; set; }
+        public string[]? NotificationEmails { get; set; }
+        public int TotalAttending { get; set; }
+    }
+
+    private void UpdateCountdown()
+    {
+        var remaining = _weddingDate - DateTimeOffset.Now;
+        if (remaining <= TimeSpan.Zero)
+        {
+            _days = _hours = _minutes = _seconds = 0;
+            return;
+        }
+        _days    = (int)remaining.TotalDays;
+        _hours   = remaining.Hours;
+        _minutes = remaining.Minutes;
+        _seconds = remaining.Seconds;
+    }
+
+    public void Dispose() => _timer?.Dispose();
+
+    /* ── RSVP State ──────────────────────────────────────── */
+    private string   _name      = "";
+    private bool     _attending = true;
+    private bool     _answered  = false;
+    private int      _guests    = 2;
+    private string   _message   = "";
+    private bool     _rsvpSent  = false;
+    private string   _error     = "";
+
+    private readonly GalleryPhoto[] _galleryPhotos =
+    [
+        new("images/gallery/01-first-meeting.png", "بداية طيبة", "A Good Beginning"),
+        new("images/gallery/02-golden-hour.png", "قبول وارتياح", "Acceptance and Ease"),
+        new("images/gallery/03-engagement.webp", "قراءة الفاتحة والخطوبة", "Fatiha and Engagement"),
+        new("images/gallery/04-proposal.png", "زفاف مبارك", "A Blessed Wedding")
+    ];
+
+    private sealed record GalleryPhoto(string Src, string LabelAr, string LabelEn);
+
+    private async Task SubmitRsvp()
+    {
+        if (string.IsNullOrWhiteSpace(_name))
+        {
+            _error = IsArabic ? "يرجى إدخال اسمك." : "Please enter your name.";
+            return;
+        }
+        if (!_answered)
+        {
+            _error = IsArabic ? "يرجى اختيار ما إذا كنت ستحضر." : "Please choose whether you'll be attending.";
+            return;
+        }
+        _error    = "";
+        _rsvpSent = true;
+        await SendNotificationAsync();
+    }
+
+    private async Task SendNotificationAsync()
+    {
+        try
+        {
+            var settings = await Http.GetFromJsonAsync<EmailSettings>("appsettings.json");
+            if (_attending)
+            {
+                settings.TotalAttending += 1;
+            }
+            var payload = new { Name = _name, Attending = _attending, Guests = _guests, Message = _message, TotalAttending = settings.TotalAttending };
+            await Http.PostAsJsonAsync(settings.EmailApiUrl, new { emails = settings.NotificationEmails, body = payload });
+        }
+        catch (Exception ex)
+        {
+            // Optionally log error
+        }
+    }
+}

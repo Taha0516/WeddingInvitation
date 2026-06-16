@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="You are cordially invited to celebrate the marriage of Layla &amp; Omar — 20 June 2025, Cairo, Egypt." />
+    <title>Layla &amp; Omar — Wedding Invitation · 20 June 2025</title>
+    <base href="/" />
+    <link rel="preload" id="webassembly" />
+
+    <!-- Google Fonts — Dancing Script, Cormorant Garamond, Raleway, Amiri, Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Cairo:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@500;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Wedding stylesheet -->
+    <link rel="stylesheet" href="css/wedding.css" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="WeddingInvitation.styles.css" rel="stylesheet" />
+
+    <!-- Prevent default body gap -->
+    <style>
+        body { margin: 0; padding: 0; }
+
+        /* ── Themed loading screen ── */
+        #wi-loading {
+            position: fixed;
+            inset: 0;
+            background: #19160F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            gap: 0.8rem;
+            transition: opacity 0.6s ease;
+        }
+
+        #wi-loading__names {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 700;
+            color: #C9A84C;
+            letter-spacing: 0.03em;
+        }
+
+        #wi-loading__subtitle {
+            font-family: 'Raleway', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: #7A6E60;
+        }
+
+        #wi-loading.wi-loading--hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Themed loading screen (shown before Blazor boots) -->
+        <div id="wi-loading" aria-label="Loading wedding invitation">
+            <div id="wi-loading__names">Layla &amp; Omar</div>
+            <div id="wi-loading__subtitle">Loading…</div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+</body>
+
+</html>
