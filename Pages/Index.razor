@@ -479,14 +479,20 @@
         try
         {
             var settings = await Http.GetFromJsonAsync<EmailSettings>("appsettings.json");
-            if (_attending)
+            if (settings != null)
             {
-                settings.TotalAttending += 1;
+                if (_attending)
+                {
+                    settings.TotalAttending += 1;
+                }
+                var payload = new { Name = _name, Attending = _attending, Guests = _guests, Message = _message, TotalAttending = settings.TotalAttending };
+                if (!string.IsNullOrEmpty(settings.EmailApiUrl))
+                {
+                    await Http.PostAsJsonAsync(settings.EmailApiUrl, new { emails = settings.NotificationEmails, body = payload });
+                }
             }
-            var payload = new { Name = _name, Attending = _attending, Guests = _guests, Message = _message, TotalAttending = settings.TotalAttending };
-            await Http.PostAsJsonAsync(settings.EmailApiUrl, new { emails = settings.NotificationEmails, body = payload });
         }
-        catch (Exception ex)
+        catch
         {
             // Optionally log error
         }
