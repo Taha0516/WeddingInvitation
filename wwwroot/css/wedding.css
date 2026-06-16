@@ -270,23 +270,27 @@ body {
   border: 1px solid var(--wi-gold);
   color: var(--wi-gold);
   background: transparent;
+  box-shadow: 0 0 0 rgba(201,168,76,0);
 }
 
 .wi-btn--outline:hover {
   background: var(--wi-gold);
   color: var(--wi-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201,168,76,0.25);
 }
 
 .wi-btn--gold {
   background: var(--wi-gold);
   color: var(--wi-dark);
   border: 1px solid var(--wi-gold);
+  box-shadow: 0 4px 15px rgba(201,168,76,0.15);
 }
 
 .wi-btn--gold:hover {
   background: var(--wi-gold-light);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(201,168,76,0.45);
 }
 
 /* Scroll hint */
@@ -964,7 +968,9 @@ body {
   /* Hero names */
   .wi-hero__names {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 
   .wi-hero__amp-ring {
@@ -1166,4 +1172,29 @@ body {
   position: absolute;
   right: 0.75rem;
   top: 0.5rem;
+}
+
+/* ── 19. Modern Scroll Animations ────────────────────────────── */
+@supports (animation-timeline: view()) {
+  .wi-section-title,
+  .wi-section-tag,
+  .wi-timeline__card,
+  .wi-event-card,
+  .wi-gallery__item,
+  .wi-rsvp__container {
+    animation: wi-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+}
+
+@keyframes wi-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
